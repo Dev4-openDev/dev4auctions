@@ -23,7 +23,7 @@ if (!isset($gCms)) exit;
  * the DoAction method, so you'll need to do them as needed in your
  * method:
 */ 
-if (! $this->CheckPermission('Use Skeleton')) {
+if (! $this->CheckPermission('Use Dev4Auctions')) {
   return $this->DisplayErrorPage($id, $params, $returnid,$this->Lang('accessdenied'));
 }
 
@@ -41,35 +41,27 @@ if (FALSE == empty($params['active_tab']))
   $tab = '';
  }
 
-$tab_header = $this->StartTabHeaders() .
-   $this->SetTabHeader('general',$this->Lang('title_general'),('general' == $tab)?true:false);
+ $querylistauctions = "SELECT * FROM ".cms_db_prefix()."module_dev4auctions_auctions";
+
+$results = $db->Execute($querylistauctions);
+$row = $results->FetchRow();
+
+
+$tab_header = $this->StartTabHeaders().$this->SetTabHeader('general',$this->Lang('title_general'),('general' == $tab)?true:false);
+$tab_header .= $this->SetTabHeader('products', $this->Lang('title_products'), ('products' == $tab)?true:false);
+$tab_header .= $this->SetTabHeader('settings', $this->Lang('title_settings'), ('settings' == $tab)?true:false);
+
 $this->smarty->assign('start_general_tab',$this->StartTab('general', $params));
-
-
-if ($this->CheckPermission('Set Skeleton Prefs'))
-   {
-   $tab_header .= $this->SetTabHeader('prefs',$this->Lang('title_mod_prefs'),
-      ('prefs' == $tab)?true:false);
-   $this->smarty->assign('start_prefs_tab',$this->StartTab('prefs', $params));
-   }
-else
-   {
-   $this->smarty->assign('start_prefs_tab','');
-   }
+$this->smarty->assign('products_tab',$this->StartTab('products', $params));
+$this->smarty->assign('settings_tab',$this->StartTab('settings', $params));
 
 $this->smarty->assign('tabs_start',$tab_header.$this->EndTabHeaders().$this->StartTabContent());
 $this->smarty->assign('tab_end',$this->EndTab());
 $this->smarty->assign('tabs_end',$this->EndTabContent());
 
-// Content defines and Form stuff for the admin
-$smarty->assign('start_form', $this->CreateFormStart($id, 'save_admin_prefs', $returnid));
-$smarty->assign('input_allow_add',$this->CreateInputCheckbox($id, 'allow_add', 1,
-   $this->GetPreference('allow_add','0')). $this->Lang('title_allow_add_help'));
-$smarty->assign('submit', $this->CreateInputSubmit($id, 'submit', lang('submit')));
-
 // translated strings
-$smarty->assign('title_allow_add',$this->Lang('title_allow_add'));
 $smarty->assign('welcome_text',$this->Lang('welcome_text'));
+var_dump($row);
 
 echo $this->ProcessTemplate('adminpanel.tpl');
 /**

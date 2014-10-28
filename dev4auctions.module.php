@@ -47,10 +47,12 @@ class Dev4auctions extends CMSModule {
     }
 
     function VisibleToAdminUser() {
-        return $this->CheckPremissions('Control dev4auctions');
+        return $this->CheckPermission('Use Dev4Auctions');
     }
 
-
+    function GetDependencies() {
+        return array();
+    }
 }
 
 ?>
