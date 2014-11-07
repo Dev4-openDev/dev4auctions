@@ -6,4 +6,13 @@
 	$lang['title_settings'] = 'Settings';
 	$lang['title_general'] = 'Auctions';
 	$lang['title_products'] = 'Products';
+
+	$lang['title_name'] = 'Name Auction: ';
+	$lang['title_product'] = 'Auction Product';
+	$lang['title_description'] = 'Auction description';
+	$lang['submit'] = 'Submit';
+	$lang['addauction']  = 'Create new Auction';
+
+	$lang['edit'] = 'Edit';
+	$lang['delete'] = 'Remove';
 ?>

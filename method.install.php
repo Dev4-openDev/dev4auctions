@@ -15,13 +15,15 @@
 	$products = "
 			product_id I KEY,
 			name C(255),
-			description X
+			description X,
+			productimage C(255)
 			";
 
 	$auctions = "
 			auction_id I KEY,
 			name C(255),
 			description X,
+			active B,
 			product_id I
 			";
 

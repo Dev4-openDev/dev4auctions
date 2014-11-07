@@ -41,10 +41,54 @@ if (FALSE == empty($params['active_tab']))
   $tab = '';
  }
 
- $querylistauctions = "SELECT * FROM ".cms_db_prefix()."module_dev4auctions_auctions";
-
+// Start Auctions tab
+$querylistauctions = "SELECT * FROM ".cms_db_prefix()."module_dev4auctions_auctions";
 $results = $db->Execute($querylistauctions);
-$row = $results->FetchRow();
+
+$rowclass = 'row1';
+
+while ($results && $row = $results->FetchRow()) {
+  $onerow = new stdClass();
+
+  $onerow->id = $row['auction_id'];
+  $onerow->title = $this->CreateLink($id, 'editauction', $returnid, strip_tags($row['name']), array('auctionid'=>$row['auction_id']));
+  $onerow->desc = $row['description'];
+  $onerow->product = $row['product_id'];
+  $onerow->editlink = $this->CreateLink($id, 'editauction', $returnid, $gCms->variables['admintheme']->DisplayImage('icons/system/edit.gif', $this->Lang('edit'),'','','systemicon'), array('auction_id'=>$row['auction_id']));
+  $onerow->deletelink = $this->CreateLink($id, 'deleteauction', $returnid, $gCms->variables['admintheme']->DisplayImage('icons/system/delete.gif', $this->Lang('delete'),'','','systemicon'), array('auction_id'=>$row['auction_id']), $this->Lang('areyousure'));
+  $onerow->rowclass = $rowclass;
+
+  $entryarray[] = $onerow;
+
+  ($rowclass=="row1"?$rowclass="row2":$rowclass="row1");  
+}
+
+//End Auctions tab
+
+
+//Start Product Tab
+$querylistproducts = "SELECT * FROM ".cms_db_prefix()."module_dev4auctions_products";
+$resultproducts = $db->Execute($querylistproducts);
+
+$rowclass = 'row1';
+
+while ($resultproducts && $row = $resultproducts->FetchRow()) {
+  $onerow = new stdClass();
+
+  $onerow->id = $row['product_id'];
+  $onerow->title = $this->CreateLink($id, 'editproduct', $returnid, strip_tags($row['name']), array('productionid' => $row['product_id']));
+  $onerow->desc = $row['description'];
+  $onerow->image = $row['productimage'];
+  $onerow->editlink = $this->CreateLink($id, 'editproduct', $returnid, $gCms->variables['admintheme']->DisplayImage('icons/system/edit.gif', $this->Lang('edit'),'','','systemicon'), array('product_id'=>$row['product_id']));
+  $onerow->deletelink = $this->CreateLink($id, 'deleteproduct', $returnid, $gCms->variables['admintheme']->DisplayImage('icons/system/delete.gif', $this->Lang('delete'),'','','systemicon'), array('product_id'=>$row['product_id']), $this->Lang('areyousure'));
+  $onerow->rowclass = $rowclass;
+
+  $entryarrayproducts[] = $onerow;
+
+  ($rowclass=="row1"?$rowclass="row2":$rowclass="row1");  
+}
+
+//End Product Tab
 
 
 $tab_header = $this->StartTabHeaders().$this->SetTabHeader('general',$this->Lang('title_general'),('general' == $tab)?true:false);
@@ -59,9 +103,13 @@ $this->smarty->assign('tabs_start',$tab_header.$this->EndTabHeaders().$this->Sta
 $this->smarty->assign('tab_end',$this->EndTab());
 $this->smarty->assign('tabs_end',$this->EndTabContent());
 
+$smarty->assign('addlink', $this->CreateLink($id, 'editauction', $returnid, $gCms->variables['admintheme']->DisplayImage('icons/system/newobject.gif', $this->Lang('addauction'),'','','systemicon'), array(), '', false, false, '') .' '. $this->CreateLink($id, 'editauction', $returnid, $this->Lang('addauction'), array(), '', false, false, 'class="pageoptions"'));
+$smarty->assign('addlinkproduct', $this->CreateLink($id, 'editproduct', $returnid, $gCms->variables['admintheme']->DisplayImage('icons/system/newobject.gif', $this->Lang('addproduct'),'','','systemicon'), array(), '', false, false, '') .' '. $this->CreateLink($id, 'editproduct', $returnid, $this->Lang('addproduct'), array(), '', false, false, 'class="pageoptions"'));
+
 // translated strings
 $smarty->assign('welcome_text',$this->Lang('welcome_text'));
-var_dump($row);
+$smarty->assign_by_ref('items', $entryarray);
+$smarty->assign_by_ref('products', $entryarrayproducts);
 
 echo $this->ProcessTemplate('adminpanel.tpl');
 /**
