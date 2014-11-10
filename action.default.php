@@ -44,6 +44,7 @@ $list = array();
 $mediaclass = 'media-left';
 
 while ($result != false && $row=$result->FetchRow() ) {
+
    $onerow = new stdClass();
    $onerow->id = $row['auction_id'];
    $onerow->name = $row['name'];
@@ -51,9 +52,25 @@ while ($result != false && $row=$result->FetchRow() ) {
    $onerow->active = $row['active'];
    $onerow->pdesc = $row['pdescription'];
    $onerow->adesc = $row['description'];
+
+
+
+   $getbids = 'SELECT * from '.cms_db_prefix().'module_dev4auctions_bids where auction_id=? ORDER BY bprice ';
+   $return = $db->Execute($getbids, array($row['auction_id']));
+
+   $bids = array();
+   while ($return !=false && $row = $return->FetchRow()) {
+      
+      $bids['bid_id']=$row['bid_id'];
+      $bids['bname']=$row['bname'];
+      $bids['bemail']=$row['bemail'];
+      $bids['bprice']=$row['bprice'];
+           
+   }
+
+   $onerow->bids = $bids;
    $onerow->image = $row['productimage'];
    $onerow->class = $mediaclass;
-   $onerow->row = $row;
 
    array_push($list, $onerow);
 

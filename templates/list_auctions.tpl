@@ -11,7 +11,7 @@
 				    	{$entry->pdesc}
 				    </div>
 				    <div class="col-md-4">
-				    <h4>Hoogste Bod:</h4>
+				    <h4>Hoogste Bod: {$entry->bids['bprice']}</h4>
 				    <p><a href="#" class="btn btn-warning" role="button">Breng een bod uit</a></p>
 				    </div>
 				  </div>

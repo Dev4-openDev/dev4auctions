@@ -45,7 +45,7 @@ if (isset($params['bid_id']))
       $row=$result->FetchRow();
       $sid = $row['bid_id']; // stupid -- we're passing the param, and then using the database version.
       $name = $row['bname'];
-      $desc = $row['bemail'];
+      $email = $row['bemail'];
       $price = $row['bprice'];
       $auction_id = $row['auction_id'];
 	  // we decode this next one, because it gets stored encoded, and the CreateTextArea API encodes as well, so
@@ -65,7 +65,8 @@ else
    $sid = -1;
    $desc = 'Some text describing this product';
    $name = 'some product';
-   $auction_id = 3;
+   $email = 'some@npo.nl';
+   $auction_id = 0;
   // $exp = '';
    }
 
@@ -80,14 +81,15 @@ $smarty->assign('title_description',$this->Lang('title_description'));
 // create inputs for the Form elements, and pass them to Smarty. You'd best look up the crazy long parameter
 // lists for the Form API in lib/classes/class.module.inc.php
 $smarty->assign('input_name',$this->CreateInputText($id,'bname',$name));
+$smarty->assign('input_email',$this->CreateInputText($id,'bemail',$email));
 $smarty->assign('auction_id',$this->CreateInputText($id,'auction_id',$auction_id));
-$smarty->assign('input_price',$this->CreateInputText(true, $id, $desc, 'bprice', '', '', '', '', 40, 5));
+$smarty->assign('input_price',$this->CreateInputText($id, 'bprice', $price));
 // pass a hidden key value along with the submit button
 $smarty->assign('submit', $this->CreateInputHidden($id,'bid_id',$sid).$this->CreateInputSubmit($id, 'submit', $this->Lang('submit')));
 $smarty->assign('end_form', $this->CreateFormEnd());
 
 
 // Display the populated template
-echo $this->ProcessTemplate('add_edit_product.tpl');
+echo $this->ProcessTemplate('add_edit_bid.tpl');
 
 ?>

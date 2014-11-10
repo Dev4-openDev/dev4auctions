@@ -59,7 +59,8 @@
             <tr>
                <th>id</th>
                <th>Name</th>
-               <th>Description</th>
+               <th>Email</th>
+               <th>Price</th>
                <th class="pageicon">Status</th>
                <th class="pageicon">&nbsp;</th>
                <th class="pageicon">&nbsp;</th>
@@ -71,6 +72,7 @@
                   <td>{$item->id}</td>
                   <td>{$item->title}</td>
                   <td>{$item->email}</td>
+                  <td>{$item->price}</td>
                   <td>{$item->editlink}</td>
                   <td>{$item->deletelink}</td>
                </tr>
