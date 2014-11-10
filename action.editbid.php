@@ -37,8 +37,6 @@ if (isset($params['bid_id']))
    $query = 'SELECT * FROM '.cms_db_prefix().'module_dev4auctions_bids WHERE bid_id = ?';
    $result = $db->Execute($query,array($params['bid_id']));
 
-
-
    if ($result !== false)
       {
 	  // load in the record if there was no error
@@ -66,9 +64,20 @@ else
    $desc = 'Some text describing this product';
    $name = 'some product';
    $email = 'some@npo.nl';
+   $price = 1.00;
    $auction_id = 0;
   // $exp = '';
    }
+
+
+
+$getauctions = 'SELECT auction_id, name from '.cms_db_prefix().'module_dev4auctions_auctions';
+$auctions = $db->Execute($getauctions);  
+$auctionslist = array();
+while ($auctions && $row = $auctions->FetchRow()) {
+   $auctionslist[$row['name']] = $row['auction_id'];
+}
+
 
 
 // set up form for Smarty
@@ -82,7 +91,7 @@ $smarty->assign('title_description',$this->Lang('title_description'));
 // lists for the Form API in lib/classes/class.module.inc.php
 $smarty->assign('input_name',$this->CreateInputText($id,'bname',$name));
 $smarty->assign('input_email',$this->CreateInputText($id,'bemail',$email));
-$smarty->assign('auction_id',$this->CreateInputText($id,'auction_id',$auction_id));
+$smarty->assign('auction_id',$this->CreateInputDropdown($id,'auction_id', $auctionslist, -1 ,$auction_id));
 $smarty->assign('input_price',$this->CreateInputText($id, 'bprice', $price));
 // pass a hidden key value along with the submit button
 $smarty->assign('submit', $this->CreateInputHidden($id,'bid_id',$sid).$this->CreateInputSubmit($id, 'submit', $this->Lang('submit')));

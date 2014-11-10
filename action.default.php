@@ -38,6 +38,7 @@ $db = $gCms->GetDb();
 
 $query = 'SELECT * from '.cms_db_prefix().'module_dev4auctions_auctions JOIN '.cms_db_prefix().'module_dev4auctions_products ON '.cms_db_prefix().'module_dev4auctions_auctions.product_id='.cms_db_prefix().'module_dev4auctions_products.product_id ';
 
+
 $result = $db->Execute($query);
 $list = array();
 

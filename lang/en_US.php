@@ -10,8 +10,11 @@
 	$lang['title_name'] = 'Name Auction: ';
 	$lang['title_product'] = 'Auction Product';
 	$lang['title_description'] = 'Auction description';
+	$lang['title_bids'] = 'Bids';
 	$lang['submit'] = 'Submit';
 	$lang['addauction']  = 'Create new Auction';
+	$lang['addproduct']  = 'Create new Product';
+	$lang['addbid']  = 'Create new Bid';
 
 	$lang['edit'] = 'Edit';
 	$lang['delete'] = 'Remove';
