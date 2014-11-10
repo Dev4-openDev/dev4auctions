@@ -32,10 +32,10 @@ if (! $this->GetPreference('allow_add',1) == 1) exit;
 $db = $gCms->GetDb();
 
 
-if (isset($params['auctionid']))
+if (isset($params['auction_id']))
    {
    $query = 'SELECT * FROM '.cms_db_prefix().'module_dev4auctions_auctions WHERE auction_id = ?';
-   $result = $db->Execute($query,array($params['auctionid']));
+   $result = $db->Execute($query,array($params['auction_id']));
 
 
 
@@ -75,11 +75,11 @@ if (isset($product)) {
 
 
 $productList = array();
-$productquery = "SELECT product_id, name FROM ".cms_db_prefix()."module_dev4auctions_products ORDER BY name ASC";
+$productquery = "SELECT product_id, pname FROM ".cms_db_prefix()."module_dev4auctions_products ORDER BY pname ASC";
 $productresult = $db->Execute($productquery);
 
 while ($productresult && $row = $productresult->FetchRow()) {
-   $productList[$row['name']] = $row['product_id'];
+   $productList[$row['pname']] = $row['product_id'];
 }
 
 // set up form for Smarty

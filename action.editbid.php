@@ -32,10 +32,10 @@ if (! $this->GetPreference('allow_add',1) == 1) exit;
 $db = $gCms->GetDb();
 
 
-if (isset($params['product_id']))
+if (isset($params['bid_id']))
    {
-   $query = 'SELECT * FROM '.cms_db_prefix().'module_dev4auctions_products WHERE product_id = ?';
-   $result = $db->Execute($query,array($params['product_id']));
+   $query = 'SELECT * FROM '.cms_db_prefix().'module_dev4auctions_bids WHERE bid_id = ?';
+   $result = $db->Execute($query,array($params['bid_id']));
 
 
 
@@ -43,10 +43,11 @@ if (isset($params['product_id']))
       {
 	  // load in the record if there was no error
       $row=$result->FetchRow();
-      $sid = $row['product_id']; // stupid -- we're passing the param, and then using the database version.
-      $name = $row['pname'];
-      $desc = $row['pdescription'];
-      $productimage = $row['productimage'];
+      $sid = $row['bid_id']; // stupid -- we're passing the param, and then using the database version.
+      $name = $row['bname'];
+      $desc = $row['bemail'];
+      $price = $row['bprice'];
+      $auction_id = $row['auction_id'];
 	  // we decode this next one, because it gets stored encoded, and the CreateTextArea API encodes as well, so
 	  // if we didn't decode it, we'd get double encoding.
       //$exp = html_entity_decode($row['explanation']); 
@@ -64,17 +65,13 @@ else
    $sid = -1;
    $desc = 'Some text describing this product';
    $name = 'some product';
-   $productimage = 'imagename.jpg';
+   $auction_id = 3;
   // $exp = '';
    }
 
-$usedproduct = $this->GetPreference('default_product', '');
-if (isset($productimage)) {
-   $usedproduct = $productimage;
-}
 
 // set up form for Smarty
-$smarty->assign('start_form', $this->CreateFormStart($id, 'save_product', $returnid));
+$smarty->assign('start_form', $this->CreateFormStart($id, 'save_bid', $returnid));
 // give Smarty translated field titles 
 $smarty->assign('titlename',$this->Lang('title_name'));
 $smarty->assign('title_description',$this->Lang('title_description'));
@@ -82,11 +79,11 @@ $smarty->assign('title_description',$this->Lang('title_description'));
 
 // create inputs for the Form elements, and pass them to Smarty. You'd best look up the crazy long parameter
 // lists for the Form API in lib/classes/class.module.inc.php
-$smarty->assign('input_name',$this->CreateInputText($id,'pname',$name));
-$smarty->assign('productimage',$this->CreateInputText($id,'productimage',$productimage));
-$smarty->assign('input_description',$this->CreateTextArea(true, $id, $desc, 'pdescription', '', '', '', '', 40, 5));
+$smarty->assign('input_name',$this->CreateInputText($id,'bname',$name));
+$smarty->assign('auction_id',$this->CreateInputText($id,'auction_id',$auction_id));
+$smarty->assign('input_price',$this->CreateInputText(true, $id, $desc, 'bprice', '', '', '', '', 40, 5));
 // pass a hidden key value along with the submit button
-$smarty->assign('submit', $this->CreateInputHidden($id,'product_id',$sid).$this->CreateInputSubmit($id, 'submit', $this->Lang('submit')));
+$smarty->assign('submit', $this->CreateInputHidden($id,'bid_id',$sid).$this->CreateInputSubmit($id, 'submit', $this->Lang('submit')));
 $smarty->assign('end_form', $this->CreateFormEnd());
 
 

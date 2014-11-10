@@ -3,7 +3,7 @@
 class Dev4auctions extends CMSModule {
 
     function GetName() {
-        return 'Dev4Auctions';
+        return 'Dev4auctions';
     }
 
     function GetFriendlyName() {
@@ -56,19 +56,9 @@ class Dev4auctions extends CMSModule {
 
     function SetParameters() {
         $this->RegisterModulePlugin();
-        
-        $this->RestrictUnknownParams();
-
-       $this->CreateParameter('auction_id', -1, $this->Lang('help_auction_id'));
-       $this->SetParameterType('auction_id',CLEAN_INT);
-
-       $this->CreateParameter('maxauctions', 0, $this->Lang('help_maxauctions'));
-       $this->SetParameterType('maxauctions', CLEAN_INT);
-
-       $this->CreateParameter('active', '', $this->Lang('help_active'));
-       $this->SetParameterType('active', CLEAN_STRING);
-
     }
+
+    
 }
 
 

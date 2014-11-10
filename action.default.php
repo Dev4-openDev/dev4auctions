@@ -21,23 +21,62 @@
  */ 
 if (!isset($gCms)) exit;
 
+
 /**
  * After this, the code is identical to the code that would otherwise be
  * wrapped in the action.
  */
 
 // get our records from the database
+
+
+$somedata = "hello world Dev4auctions here";
+$this->smarty->assign('somedata', $somedata);
+
+
 $db = $gCms->GetDb();
 
-$query = 'SELECT skeleton_id, description, explanation from '.cms_db_prefix().
-   'module_skeleton';
+$query = 'SELECT * from '.cms_db_prefix().'module_dev4auctions_auctions JOIN '.cms_db_prefix().'module_dev4auctions_products ON '.cms_db_prefix().'module_dev4auctions_auctions.product_id='.cms_db_prefix().'module_dev4auctions_products.product_id ';
 
-if (isset($params['skeleton_id']))
+$result = $db->Execute($query);
+$list = array();
+
+$mediaclass = 'media-left';
+
+while ($result != false && $row=$result->FetchRow() ) {
+   $onerow = new stdClass();
+   $onerow->id = $row['auction_id'];
+   $onerow->name = $row['name'];
+   $onerow->pname = $row['pname'];
+   $onerow->active = $row['active'];
+   $onerow->pdesc = $row['pdescription'];
+   $onerow->adesc = $row['description'];
+   $onerow->image = $row['productimage'];
+   $onerow->class = $mediaclass;
+   $onerow->row = $row;
+
+   array_push($list, $onerow);
+
+   ($mediaclass=="media-left"?$mediaclass="media-right":$mediaclass="media-left");  
+}
+
+$this->smarty->assign('list', $list);
+
+
+
+/*
+
+$db = $gCms->GetDb();
+
+$query = 'SELECT * from '.cms_db_prefix().
+   'module_dev4auctions_auctions';
+
+if (isset($params['auction_id']))
    {
    // *ALWAYS* use parameterized queries with user-provided input
    // to prevent SQL-Injection attacks!
-   $query .= ' where skeleton_id = ?';
-   $result = $db->Execute($query,array($params['skeleton_id']));
+   $query .= ' where auction_id = ?';
+   $result = $db->Execute($query,array($params['auction_id']));
    $mode = 'detail'; // we're viewing a single record
    }
 else
@@ -52,18 +91,29 @@ while ($result !== false && $row=$result->FetchRow())
    {
    // create a new object for every record that we retrieve
    $rec = new stdClass();
-   $rec->id = $row['skeleton_id'];
-   $rec->name = $row['description'];
-   $rec->explanation = $row['explanation'];
+   $rec->id = $row['auction_id'];
+   $rec->name = $row['name'];
+   $rec->description = $row['description'];
 
    // create attributes for rendering "view" links for the object.
    // $id and $returnid are predefined for us by the module API
    // that last parameter is the Pretty URL link
    $rec->view = $this->CreateFrontendLink($id, $returnid, 'default', $this->Lang('link_view'),
-      array('skeleton_id'=>$rec->id),'',false,true,'',false,'skeleton/view/'.$rec->id.'/'.$returnid);
+      array('auction_id'=>$rec->id),'',false,true,'',false,'skeleton/view/'.$rec->id.'/'.$returnid);
    $rec->edit = $this->CreateFrontendLink($id, $returnid, 'add_edit', $this->Lang('edit'),
-      array('skeleton_id'=>$rec->id),'',false,true,'',false,'skeleton/edit/'.$rec->id.'/'.$returnid);
+      array('auction_id'=>$rec->id),'',false,true,'',false,'skeleton/edit/'.$rec->id.'/'.$returnid);
    array_push($records,$rec);
+   } else {
+      $rec = new stdClass();
+      $rec->id = 12;
+      $rec->name = 'something';
+      $rec->description = 'whent wrong';
+
+      // create attributes for rendering "view" links for the object.
+      // $id and $returnid are predefined for us by the module API
+      // that last parameter is the Pretty URL link
+
+      array_push($records,$rec);
    }
 
 // Expose the list to smarty.
@@ -96,6 +146,7 @@ else
    }
 
 // Display the populated template
-echo $this->ProcessTemplate('skeleton_list.tpl');
+*/
+echo $this->ProcessTemplate('list_auctions.tpl');
 
 ?>

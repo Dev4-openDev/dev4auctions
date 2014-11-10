@@ -31,8 +31,8 @@ if (isset($params['auction_id']) && $params['auction_id'] != -1)
    {
 	// we received a skeleton_id that was not -1, which means we're updating an
 	// existing record. So we issue a SQL Update
-   $query = 'UPDATE '.cms_db_prefix().'module_dev4auctions_auctions set name=?, description=? where auction_id= ?';
-   $result = $db->Execute($query,array($params['name'],$params['description'],$params['auction_id']));
+   $query = 'UPDATE '.cms_db_prefix().'module_dev4auctions_auctions set name=?, description=?, active=?, product_id=? where auction_id= ?';
+   $result = $db->Execute($query,array($params['name'],$params['description'], true, $params['product_id'] ,$params['auction_id']));
    $params['module_message'] = $this->Lang('updated_record');
    }
 else
@@ -40,8 +40,8 @@ else
 	// we received no skeleton_id or one that was -1, which means we're creating
 	// a new record. So we issue a SQL Insert. But first, we use the sequence to get a fresh ID
    $sid = $db->GenID(cms_db_prefix().'module_dev4auctions_auctions_seq');
-   $query = 'INSERT INTO '.cms_db_prefix().'module_dev4auctions_auctions (auction_id, name, description) VALUES (?,?,?)';
-   $result = $db->Execute($query,array($sid,$params['name'],$params['description']));
+   $query = 'INSERT INTO '.cms_db_prefix().'module_dev4auctions_auctions (auction_id, name, description, active, product_id) VALUES (?,?,?,?,?)';
+   $result = $db->Execute($query,array($sid,$params['name'],$params['description'],true, $params['product_id']));
    $params['module_message'] = $this->Lang('added_record');
    }
 
