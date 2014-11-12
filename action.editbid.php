@@ -92,7 +92,7 @@ $smarty->assign('title_description',$this->Lang('title_description'));
 $smarty->assign('input_name',$this->CreateInputText($id,'bname',$name));
 $smarty->assign('input_email',$this->CreateInputText($id,'bemail',$email));
 $smarty->assign('auction_id',$this->CreateInputDropdown($id,'auction_id', $auctionslist, -1 ,$auction_id));
-$smarty->assign('input_price',$this->CreateInputText($id, 'bprice', $price));
+$smarty->assign('input_price',$this->CreateInputNumber($id, 'bprice', $price));
 // pass a hidden key value along with the submit button
 $smarty->assign('submit', $this->CreateInputHidden($id,'bid_id',$sid).$this->CreateInputSubmit($id, 'submit', $this->Lang('submit')));
 $smarty->assign('end_form', $this->CreateFormEnd());

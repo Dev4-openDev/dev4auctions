@@ -21,7 +21,8 @@
  */ 
 if (!isset($gCms)) exit;
 
-
+$db = $gCms->GetDb();
+$query = 'SELECT * from '.cms_db_prefix().'module_dev4auctions_auctions';
 /**
  * After this, the code is identical to the code that would otherwise be
  * wrapped in the action.
@@ -29,58 +30,141 @@ if (!isset($gCms)) exit;
 
 // get our records from the database
 
+if (isset($params['auction_id'])) {
+   $query .= ' JOIN '.cms_db_prefix().'module_dev4auctions_products ON '.cms_db_prefix().'module_dev4auctions_auctions.product_id='.cms_db_prefix().'module_dev4auctions_products.product_id WHERE auction_id='.$params['auction_id'];
 
-$somedata = "hello world Dev4auctions here";
-$this->smarty->assign('somedata', $somedata);
+   $result = $db->Execute($query);
+   $list = array();
 
+   $mediaclass = 'media-left';
 
-$db = $gCms->GetDb();
+   while ($result != false && $row=$result->FetchRow() ) {
 
-$query = 'SELECT * from '.cms_db_prefix().'module_dev4auctions_auctions JOIN '.cms_db_prefix().'module_dev4auctions_products ON '.cms_db_prefix().'module_dev4auctions_auctions.product_id='.cms_db_prefix().'module_dev4auctions_products.product_id ';
-
-
-$result = $db->Execute($query);
-$list = array();
-
-$mediaclass = 'media-left';
-
-while ($result != false && $row=$result->FetchRow() ) {
-
-   $onerow = new stdClass();
-   $onerow->id = $row['auction_id'];
-   $onerow->name = $row['name'];
-   $onerow->pname = $row['pname'];
-   $onerow->active = $row['active'];
-   $onerow->pdesc = $row['pdescription'];
-   $onerow->adesc = $row['description'];
+      $onerow = new stdClass();
+      $onerow->id = $row['auction_id'];
+      $onerow->name = $row['name'];
+      $onerow->pname = $row['pname'];
+      $onerow->image = $row['productimage'];
+      $onerow->active = $row['active'];
+      $onerow->pdesc = $row['pdescription'];
+      $onerow->adesc = $row['description'];
 
 
 
-   $getbids = 'SELECT * from '.cms_db_prefix().'module_dev4auctions_bids where auction_id=? ORDER BY bprice ';
-   $return = $db->Execute($getbids, array($row['auction_id']));
+      $getbids = 'SELECT * from '.cms_db_prefix().'module_dev4auctions_bids where auction_id=? ORDER BY bprice ';
+      $return = $db->Execute($getbids, array($row['auction_id']));
 
-   $bids = array();
-   while ($return !=false && $row = $return->FetchRow()) {
-      
-      $bids['bid_id']=$row['bid_id'];
-      $bids['bname']=$row['bname'];
-      $bids['bemail']=$row['bemail'];
-      $bids['bprice']=$row['bprice'];
-           
+      $bids = array();
+      while ($return !=false && $row = $return->FetchRow()) {
+         
+         $bids['bid_id']=$row['bid_id'];
+         $bids['bname']=$row['bname'];
+         $bids['bemail']=$row['bemail'];
+         $bids['bprice']=$row['bprice'];
+              
+      }
+
+      $onerow->bids = $bids;
+      $onerow->class = $mediaclass;
+
+      array_push($list, $onerow);
+
+      ($mediaclass=="media-left"?$mediaclass="media-right":$mediaclass="media-left");  
    }
 
-   $onerow->bids = $bids;
-   $onerow->image = $row['productimage'];
-   $onerow->class = $mediaclass;
+   $this->smarty->assign('list', $list);
+   echo $this->ProcessTemplate('single_auctions.tpl');
 
-   array_push($list, $onerow);
+} elseif(isset($params['items'])) {
+   $query .= ' JOIN '.cms_db_prefix().'module_dev4auctions_products ON '.cms_db_prefix().'module_dev4auctions_auctions.product_id='.cms_db_prefix().'module_dev4auctions_products.product_id ORDER BY auction_id DESC LIMIT '.$params['items'];
 
-   ($mediaclass=="media-left"?$mediaclass="media-right":$mediaclass="media-left");  
+   $result = $db->Execute($query);
+   $list = array();
+
+   $mediaclass = 'media-left';
+
+   while ($result != false && $row=$result->FetchRow() ) {
+
+      $onerow = new stdClass();
+      $onerow->id = $row['auction_id'];
+      $onerow->name = $row['name'];
+      $onerow->pname = $row['pname'];
+      $onerow->image = $row['productimage'];
+      $onerow->active = $row['active'];
+      $onerow->pdesc = $row['pdescription'];
+      $onerow->adesc = $row['description'];
+
+
+
+      $getbids = 'SELECT * from '.cms_db_prefix().'module_dev4auctions_bids where auction_id=? ORDER BY bprice ';
+      $return = $db->Execute($getbids, array($row['auction_id']));
+
+      $bids = array();
+      while ($return !=false && $row = $return->FetchRow()) {
+         
+         $bids['bid_id']=$row['bid_id'];
+         $bids['bname']=$row['bname'];
+         $bids['bemail']=$row['bemail'];
+         $bids['bprice']=$row['bprice'];
+              
+      }
+
+      $onerow->bids = $bids;
+      $onerow->class = $mediaclass;
+
+      array_push($list, $onerow);
+
+      ($mediaclass=="media-left"?$mediaclass="media-right":$mediaclass="media-left");  
+   }
+
+   $this->smarty->assign('list', $list);
+   echo $this->ProcessTemplate('front_auctions.tpl');
+
+} else {
+   $query .= ' JOIN '.cms_db_prefix().'module_dev4auctions_products ON '.cms_db_prefix().'module_dev4auctions_auctions.product_id='.cms_db_prefix().'module_dev4auctions_products.product_id ';
+
+   $result = $db->Execute($query);
+   $list = array();
+
+   $mediaclass = 'links';
+
+   while ($result != false && $row=$result->FetchRow() ) {
+
+      $onerow = new stdClass();
+      $onerow->id = $row['auction_id'];
+      $onerow->name = $row['name'];
+      $onerow->pname = $row['pname'];
+      $onerow->active = $row['active'];
+      $onerow->pdesc = $row['pdescription'];
+      $onerow->adesc = $row['description'];
+
+
+
+      $getbids = 'SELECT * from '.cms_db_prefix().'module_dev4auctions_bids where auction_id=? ORDER BY bprice ';
+      $return = $db->Execute($getbids, array($row['auction_id']));
+
+      $bids = array();
+      while ($return !=false && $row = $return->FetchRow()) {
+         
+         $bids['bid_id']=$row['bid_id'];
+         $bids['bname']=$row['bname'];
+         $bids['bemail']=$row['bemail'];
+         $bids['bprice']=$row['bprice'];
+              
+      }
+
+      $onerow->bids = $bids;
+      $onerow->image = $row['productimage'];
+      $onerow->class = $mediaclass;
+
+      array_push($list, $onerow);
+
+      ($mediaclass=="links"?$mediaclass="rechts":$mediaclass="links");  
+   }
+
+   $this->smarty->assign('list', $list);
+   echo $this->ProcessTemplate('list_auctions.tpl');
 }
-
-$this->smarty->assign('list', $list);
-
-
 
 /*
 
@@ -165,6 +249,5 @@ else
 
 // Display the populated template
 */
-echo $this->ProcessTemplate('list_auctions.tpl');
 
 ?>
