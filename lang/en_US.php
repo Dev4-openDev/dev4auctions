@@ -18,4 +18,12 @@
 
 	$lang['edit'] = 'Edit';
 	$lang['delete'] = 'Remove';
+
+	$lang['bid_front_title'] = 'Jouw naam';
+	$lang['bid_front_mail'] = 'NPO Email adres';
+	$lang['bid_front_price'] = 'Jouw bod';
+	$lang['bid_front_value_name'] = 'voor & achternaam';
+	$lang['bid_front_value_email'] = 'voornaam.achternaam@npo.nl';
+	$lang['title_bids_back_auctionfilter'] = "Filter Bids";
+	
 ?>

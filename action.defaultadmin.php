@@ -92,8 +92,28 @@ while ($resultproducts && $row = $resultproducts->FetchRow()) {
 
 
 //Start Bids Tab
-$querylistbids = "SELECT * FROM ".cms_db_prefix()."module_dev4auctions_bids";
-$resultbids = $db->Execute($querylistbids);
+if (isset($params['auction_id'])) {
+  $querylistbids = "SELECT * FROM ".cms_db_prefix()."module_dev4auctions_bids WHERE auction_id=".$params['auction_id'];
+  $resultbids = $db->Execute($querylistbids);
+} else {
+  $querylistbids = "SELECT * FROM ".cms_db_prefix()."module_dev4auctions_bids ORDER BY auction_id DESC";
+  $resultbids = $db->Execute($querylistbids);
+}
+
+
+$getauctions = 'SELECT auction_id, name from '.cms_db_prefix().'module_dev4auctions_auctions';
+$auctions = $db->Execute($getauctions);  
+$auctionslist = array();
+while ($auctions && $row = $auctions->FetchRow()) {
+   $auctionslist[$row['name']] = $row['auction_id'];
+   $auctionsbyid[$row['auction_id']] = $row['name'];
+}
+
+$smarty->assign('start_form', $this->CreateFormStart($id, 'defaultadmin', $returnid));
+$smarty->assign('title_auctionfilter', $this->Lang('title_bids_back_auctionfilter'));
+$smarty->assign('auction_id',$this->CreateInputDropdown($id,'auction_id', $auctionslist, -1));
+$smarty->assign('submit', $this->CreateInputSubmit($id, 'submit', $this->Lang('submit')));
+$smarty->assign('end_form', $this->CreateFormEnd());
 
 $rowclass = 'row1';
 
@@ -106,6 +126,7 @@ while ($resultbids && $row = $resultbids->FetchRow()) {
   $onerow->price = $row['bprice'];
   $onerow->editlink = $this->CreateLink($id, 'editbid', $returnid, $gCms->variables['admintheme']->DisplayImage('icons/system/edit.gif', $this->Lang('edit'),'','','systemicon'), array('bid_id'=>$row['bid_id']));
   $onerow->deletelink = $this->CreateLink($id, 'deletebid', $returnid, $gCms->variables['admintheme']->DisplayImage('icons/system/delete.gif', $this->Lang('delete'),'','','systemicon'), array('bid_id'=>$row['bid_id']), $this->Lang('areyousure'));
+  $onerow->auctionid = $auctionsbyid[$row['auction_id']];
   $onerow->rowclass = $rowclass;
 
   $entryarraybids[] = $onerow;

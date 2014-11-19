@@ -5,7 +5,7 @@
 			<div class="caption center-align-text">
 				<h3>{$entry->name}</h3>
 				<h4>Hoogste Bod: €{$entry->bids['bprice']},-</h4>
-				<p><a href="#" class="btn btn-warning" role="button">Bied</a></p>
+				<p><a href="{$entry->bieden}" class="btn btn-warning" role="button">Bied</a></p>
 				{$entry->adesc}				
 			</div>
 		</div>

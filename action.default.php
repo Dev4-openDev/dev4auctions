@@ -48,6 +48,7 @@ if (isset($params['auction_id'])) {
       $onerow->active = $row['active'];
       $onerow->pdesc = $row['pdescription'];
       $onerow->adesc = $row['description'];
+      $onerow->bieden = $this->CreateLink($id, 'placebid', $returnid, strip_tags('Bied'), array('auction_id' => $row['auction_id']), '', true);
 
 
 
@@ -76,6 +77,7 @@ if (isset($params['auction_id'])) {
    echo $this->ProcessTemplate('single_auctions.tpl');
 
 } elseif(isset($params['items'])) {
+
    $query .= ' JOIN '.cms_db_prefix().'module_dev4auctions_products ON '.cms_db_prefix().'module_dev4auctions_auctions.product_id='.cms_db_prefix().'module_dev4auctions_products.product_id ORDER BY auction_id DESC LIMIT '.$params['items'];
 
    $result = $db->Execute($query);
@@ -93,6 +95,7 @@ if (isset($params['auction_id'])) {
       $onerow->active = $row['active'];
       $onerow->pdesc = $row['pdescription'];
       $onerow->adesc = $row['description'];
+      $onerow->bieden = $this->CreateLink($id, 'placebid', $returnid, strip_tags('Bied'), array('auction_id' => $row['auction_id']), '', true);
 
 
 
@@ -137,7 +140,8 @@ if (isset($params['auction_id'])) {
       $onerow->active = $row['active'];
       $onerow->pdesc = $row['pdescription'];
       $onerow->adesc = $row['description'];
-
+      $onerow->image = $row['productimage'];
+      $onerow->bieden = $this->CreateLink($id, 'placebid', $returnid, strip_tags('Bied'), array('auction_id' => $row['auction_id']), '', true);
 
 
       $getbids = 'SELECT * from '.cms_db_prefix().'module_dev4auctions_bids where auction_id=? ORDER BY bprice ';
@@ -154,7 +158,6 @@ if (isset($params['auction_id'])) {
       }
 
       $onerow->bids = $bids;
-      $onerow->image = $row['productimage'];
       $onerow->class = $mediaclass;
 
       array_push($list, $onerow);
@@ -163,7 +166,7 @@ if (isset($params['auction_id'])) {
    }
 
    $this->smarty->assign('list', $list);
-   echo $this->ProcessTemplate('list_auctions.tpl');
+   echo $this->ProcessTemplate('listauctions.tpl');
 }
 
 /*

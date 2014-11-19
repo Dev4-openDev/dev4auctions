@@ -54,11 +54,15 @@
       {$addlinkproduct}
    {$tab_end}
    {$bids_tab}
-            <table cellspacing="0" class="pagetable">
+         {$start_form}
+            <p>{$title_auctionfilter}</p>
+            <p>{$auction_id}{$submit}</p>
+         {$end_form}
+         <table cellspacing="0" class="pagetable">
          <thead>
             <tr>
                <th>id</th>
-               <th>Name</th>
+               <th>AuctionID</th>
                <th>Email</th>
                <th>Price</th>
                <th class="pageicon">Status</th>
@@ -70,7 +74,7 @@
             {foreach $bids as $item}
                   <tr class="{$item->rowclass}">
                   <td>{$item->id}</td>
-                  <td>{$item->title}</td>
+                  <td>{$item->auctionid}</td>
                   <td>{$item->email}</td>
                   <td>{$item->price}</td>
                   <td>{$item->editlink}</td>
