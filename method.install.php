@@ -24,14 +24,16 @@
 			name C(255),
 			description X,
 			active B,
-			product_id I
+			product_id I,
+			start_date T,
+			end_date T
 			";
 
 	$bids = "
 		bid_id I KEY,
 		bname C(255),
 		bemail C(255),
-		bprice F,
+		bprice N,
 		auction_id I
 		";
 

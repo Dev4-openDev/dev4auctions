@@ -83,8 +83,8 @@ while ($auctions && $row = $auctions->FetchRow()) {
 // set up form for Smarty
 $smarty->assign('start_form', $this->CreateFormStart($id, 'save_bid', $returnid));
 // give Smarty translated field titles 
-$smarty->assign('titlename',$this->Lang('title_name'));
-$smarty->assign('title_description',$this->Lang('title_description'));
+$smarty->assign('titlename',$this->Lang('title_bid_name'));
+$smarty->assign('title_description',$this->Lang('title_bid_description'));
 
 
 // create inputs for the Form elements, and pass them to Smarty. You'd best look up the crazy long parameter
@@ -94,7 +94,7 @@ $smarty->assign('input_email',$this->CreateInputText($id,'bemail',$email));
 $smarty->assign('auction_id',$this->CreateInputDropdown($id,'auction_id', $auctionslist, -1 ,$auction_id));
 $smarty->assign('input_price',$this->CreateInputNumber($id, 'bprice', $price));
 // pass a hidden key value along with the submit button
-$smarty->assign('submit', $this->CreateInputHidden($id,'bid_id',$sid).$this->CreateInputSubmit($id, 'submit', $this->Lang('submit')));
+$smarty->assign('submit', $this->CreateInputHidden($id,'active_tab','bids').$this->CreateInputHidden($id,'bid_id',$sid).$this->CreateInputSubmit($id, 'submit', $this->Lang('submit')));
 $smarty->assign('end_form', $this->CreateFormEnd());
 
 

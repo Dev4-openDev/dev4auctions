@@ -5,7 +5,7 @@ if (!isset($gCms)) exit;
 $auction_id = '';
 if (isset($params['bid_id']))
   {
-    $product_id = $params['bid_id'];
+    $bid_id = $params['bid_id'];
   }
 
 //news_admin_ops::delete_article($auction_id);

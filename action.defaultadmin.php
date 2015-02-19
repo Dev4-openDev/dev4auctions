@@ -93,7 +93,7 @@ while ($resultproducts && $row = $resultproducts->FetchRow()) {
 
 //Start Bids Tab
 if (isset($params['auction_id'])) {
-  $querylistbids = "SELECT * FROM ".cms_db_prefix()."module_dev4auctions_bids WHERE auction_id=".$params['auction_id'];
+  $querylistbids = "SELECT * FROM ".cms_db_prefix()."module_dev4auctions_bids WHERE auction_id=".$params['auction_id']." ORDER BY bprice DESC";
   $resultbids = $db->Execute($querylistbids);
 } else {
   $querylistbids = "SELECT * FROM ".cms_db_prefix()."module_dev4auctions_bids ORDER BY auction_id DESC";
@@ -112,7 +112,7 @@ while ($auctions && $row = $auctions->FetchRow()) {
 $smarty->assign('start_form', $this->CreateFormStart($id, 'defaultadmin', $returnid));
 $smarty->assign('title_auctionfilter', $this->Lang('title_bids_back_auctionfilter'));
 $smarty->assign('auction_id',$this->CreateInputDropdown($id,'auction_id', $auctionslist, -1));
-$smarty->assign('submit', $this->CreateInputSubmit($id, 'submit', $this->Lang('submit')));
+$smarty->assign('submit', $this->CreateInputHidden($id,'active_tab','bids').$this->CreateInputSubmit($id, 'submit', $this->Lang('submit')));
 $smarty->assign('end_form', $this->CreateFormEnd());
 
 $rowclass = 'row1';
@@ -124,9 +124,9 @@ while ($resultbids && $row = $resultbids->FetchRow()) {
   $onerow->title = $this->CreateLink($id, 'editbid', $returnid, strip_tags($row['bname']), array('bid_id' => $row['bid_id']));
   $onerow->email = $row['bemail'];
   $onerow->price = $row['bprice'];
+  $onerow->auctionid = $auctionsbyid[$row['auction_id']];
   $onerow->editlink = $this->CreateLink($id, 'editbid', $returnid, $gCms->variables['admintheme']->DisplayImage('icons/system/edit.gif', $this->Lang('edit'),'','','systemicon'), array('bid_id'=>$row['bid_id']));
   $onerow->deletelink = $this->CreateLink($id, 'deletebid', $returnid, $gCms->variables['admintheme']->DisplayImage('icons/system/delete.gif', $this->Lang('delete'),'','','systemicon'), array('bid_id'=>$row['bid_id']), $this->Lang('areyousure'));
-  $onerow->auctionid = $auctionsbyid[$row['auction_id']];
   $onerow->rowclass = $rowclass;
 
   $entryarraybids[] = $onerow;
@@ -141,12 +141,10 @@ while ($resultbids && $row = $resultbids->FetchRow()) {
 $tab_header = $this->StartTabHeaders().$this->SetTabHeader('general',$this->Lang('title_general'),('general' == $tab)?true:false);
 $tab_header .= $this->SetTabHeader('products', $this->Lang('title_products'), ('products' == $tab)?true:false);
 $tab_header .= $this->SetTabHeader('bids', $this->Lang('title_bids'), ('bids' == $tab)?true:false);
-$tab_header .= $this->SetTabHeader('settings', $this->Lang('title_settings'), ('settings' == $tab)?true:false);
 
 $this->smarty->assign('start_general_tab',$this->StartTab('general', $params));
 $this->smarty->assign('products_tab',$this->StartTab('products', $params));
 $this->smarty->assign('bids_tab',$this->StartTab('bids', $params));
-$this->smarty->assign('settings_tab',$this->StartTab('settings', $params));
 
 $this->smarty->assign('tabs_start',$tab_header.$this->EndTabHeaders().$this->StartTabContent());
 $this->smarty->assign('tab_end',$this->EndTab());

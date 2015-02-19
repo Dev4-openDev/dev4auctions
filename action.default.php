@@ -70,7 +70,6 @@ if (isset($params['auction_id'])) {
 
       array_push($list, $onerow);
 
-      ($mediaclass=="media-left"?$mediaclass="media-right":$mediaclass="media-left");  
    }
 
    $this->smarty->assign('list', $list);
@@ -96,6 +95,8 @@ if (isset($params['auction_id'])) {
       $onerow->pdesc = $row['pdescription'];
       $onerow->adesc = $row['description'];
       $onerow->bieden = $this->CreateLink($id, 'placebid', $returnid, strip_tags('Bied'), array('auction_id' => $row['auction_id']), '', true);
+      $onerow->meerinfo = $this->CreateLink($id, 'default', $returnid, strip_tags('meerinfo'), array('auction_id' => $row['auction_id']), '', true);
+
 
 
 
@@ -142,7 +143,7 @@ if (isset($params['auction_id'])) {
       $onerow->adesc = $row['description'];
       $onerow->image = $row['productimage'];
       $onerow->bieden = $this->CreateLink($id, 'placebid', $returnid, strip_tags('Bied'), array('auction_id' => $row['auction_id']), '', true);
-
+      $onerow->meerinfo = $this->CreateLink($id, 'default', $returnid, strip_tags('meerinfo'), array('auction_id' => $row['auction_id']), '', true);
 
       $getbids = 'SELECT * from '.cms_db_prefix().'module_dev4auctions_bids where auction_id=? ORDER BY bprice ';
       $return = $db->Execute($getbids, array($row['auction_id']));

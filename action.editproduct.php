@@ -76,8 +76,8 @@ if (isset($productimage)) {
 // set up form for Smarty
 $smarty->assign('start_form', $this->CreateFormStart($id, 'save_product', $returnid));
 // give Smarty translated field titles 
-$smarty->assign('titlename',$this->Lang('title_name'));
-$smarty->assign('title_description',$this->Lang('title_description'));
+$smarty->assign('titlename',$this->Lang('title_product_name'));
+$smarty->assign('title_description',$this->Lang('title_product_description'));
 
 
 // create inputs for the Form elements, and pass them to Smarty. You'd best look up the crazy long parameter
@@ -86,7 +86,7 @@ $smarty->assign('input_name',$this->CreateInputText($id,'pname',$name));
 $smarty->assign('productimage',$this->CreateInputText($id,'productimage',$productimage));
 $smarty->assign('input_description',$this->CreateTextArea(true, $id, $desc, 'pdescription', '', '', '', '', 40, 5));
 // pass a hidden key value along with the submit button
-$smarty->assign('submit', $this->CreateInputHidden($id,'product_id',$sid).$this->CreateInputSubmit($id, 'submit', $this->Lang('submit')));
+$smarty->assign('submit', $this->CreateInputHidden($id,'active_tab','products').$this->CreateInputHidden($id,'product_id',$sid).$this->CreateInputSubmit($id, 'submit', $this->Lang('submit')));
 $smarty->assign('end_form', $this->CreateFormEnd());
 
 

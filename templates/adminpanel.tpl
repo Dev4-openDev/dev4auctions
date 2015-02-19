@@ -85,7 +85,4 @@
       </table>
       {$addlinkbid}
    {$tab_end}
-   {$settings_tab}
-      {$welcome_text}
-   {$tab_end}
 {$tabs_end}

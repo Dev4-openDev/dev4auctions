@@ -23,12 +23,10 @@
 					    <div class="col-md-10 {$entry->class}">
 					    	<h4 class="media-heading">{$entry->name}</h4>
 					    	{$entry->adesc}
-					    	<h4>{$entry->pname}</h4>
-					    	{$entry->pdesc}
 					    </div>
 					    <div class="col-md-2">
 					    	<h4>Hoogste Bod: €{$entry->bids['bprice']},-</h4>
-					    	<p><a href="{$entry->bieden}" class="btn btn-warning" role="button">Bieden</a></p>
+					    	<p><a href="{$entry->bieden}" class="btn btn-warning" role="button">Bieden</a><br/><br/><a href="{$entry->meerinfo}" class="btn btn-warning" role="button">Meer info</a></p>
 					    </div>
 					</div>
 
@@ -55,19 +53,19 @@
 					<div class="col-md-10">
 						<div class="col-md-2 hidden-sm hidden-xs">
 					    	<h4>Hoogste Bod: €{$entry->bids['bprice']},-</h4>
-					    	<p><a href="{$entry->bieden}" class="btn btn-warning" role="button">Bieden</a></p>
+					    	<p><a href="{$entry->bieden}" class="btn btn-warning" role="button">Bieden</a><br/><br/><a href="{$entry->meerinfo}" class="btn btn-warning" role="button">Meer info</a></p>
 					    </div>
 					    <div class="col-md-10 hidden-md hidden-lg">
 					    	<h4 class="media-heading">{$entry->name}</h4>
 					    	{$entry->adesc}
-					    	<h4>{$entry->pname}</h4>
-					    	{$entry->pdesc}
 					    </div>
 					    <div class="col-md-10 {$entry->class} hidden-sm hidden-xs">
 					    	<h4 class="media-heading">{$entry->name}</h4>
 					    	{$entry->adesc}
-					    	<h4>{$entry->pname}</h4>
-					    	{$entry->pdesc}
+					    </div>
+					    <div class="col-md-2 hidden-md hidden-lg">
+					    	<h4>Hoogste Bod: €{$entry->bids['bprice']},-</h4>
+					    	<p><a href="{$entry->bieden}" class="btn btn-warning" role="button">Bieden</a><br/><br/><a href="{$entry->meerinfo}" class="btn btn-warning" role="button">Meer info</a></p>
 					    </div>
 					</div>
 					<div class="col-md-2 hidden-sm hidden-xs">
