@@ -19,16 +19,53 @@
 
 						</div>
 					</div>
+
 					<div class="col-md-10">
 					    <div class="col-md-10 {$entry->class}">
 					    	<h4 class="media-heading">{$entry->name}</h4>
+					    	<p><small id={$entry->id} ></small></p>
 					    	{$entry->adesc}
 					    </div>
 					    <div class="col-md-2">
 					    	<h4>Hoogste Bod: €{$entry->bids['bprice']},-</h4>
-					    	<p><a href="{$entry->bieden}" class="btn btn-warning" role="button">Bieden</a><br/><br/><a href="{$entry->meerinfo}" class="btn btn-warning" role="button">Meer info</a></p>
+					    	<p>
+					    	{if $entry->currentdate < $entry->enddate && $entry->currentdate > $entry->startdate}
+					    	<a href="{$entry->bieden}" class="btn btn-warning" role="button">Bieden</a><br/><br/>
+					    	{/if}
+					    	<a href="{$entry->meerinfo}" class="btn btn-warning" role="button">Meer info</a></p>
 					    </div>
 					</div>
+
+					<script type="text/javascript">
+						
+						var start = new Date({$entry->startdate}*1000)
+						// time = {$entry->startdate};
+						// start.setTime(time);
+						end = new Date({$entry->enddate}*1000);
+						// time2 = {$entry->enddate}
+						// end.setTime(time2);
+
+						
+
+						{literal}
+						function checkTime(i) {
+					    	if (i<10) {i = "0" + i};  // add zero in front of numbers < 10
+					    	return i;
+						}
+
+						
+						h = checkTime(start.getHours());
+						m = checkTime(start.getMinutes());
+
+						u = checkTime(end.getHours());
+						e = checkTime(end.getMinutes());
+
+						display = 'van '+h+':'+m+' - '+start.toDateString()+' tot '+u+':'+e+' - '+end.toDateString()
+						{/literal}
+						dates = document.getElementById({$entry->id});
+						dates.innerHTML = display;
+						
+					</script>
 
 
 				{else}
@@ -53,7 +90,11 @@
 					<div class="col-md-10">
 						<div class="col-md-2 hidden-sm hidden-xs">
 					    	<h4>Hoogste Bod: €{$entry->bids['bprice']},-</h4>
-					    	<p><a href="{$entry->bieden}" class="btn btn-warning" role="button">Bieden</a><br/><br/><a href="{$entry->meerinfo}" class="btn btn-warning" role="button">Meer info</a></p>
+					    	<p>
+					    	{if $entry->currentdate < $entry->enddate && $entry->currentdate > $entry->startdate}
+					    	<a href="{$entry->bieden}" class="btn btn-warning" role="button">Bieden</a><br/><br/>
+					    	{/if}
+					    	<a href="{$entry->meerinfo}" class="btn btn-warning" role="button">Meer info</a></p>
 					    </div>
 					    <div class="col-md-10 hidden-md hidden-lg">
 					    	<h4 class="media-heading">{$entry->name}</h4>
@@ -61,13 +102,42 @@
 					    </div>
 					    <div class="col-md-10 {$entry->class} hidden-sm hidden-xs">
 					    	<h4 class="media-heading">{$entry->name}</h4>
+					    	<p><small id={$entry->id}></small></p>
 					    	{$entry->adesc}
 					    </div>
 					    <div class="col-md-2 hidden-md hidden-lg">
 					    	<h4>Hoogste Bod: €{$entry->bids['bprice']},-</h4>
-					    	<p><a href="{$entry->bieden}" class="btn btn-warning" role="button">Bieden</a><br/><br/><a href="{$entry->meerinfo}" class="btn btn-warning" role="button">Meer info</a></p>
+					    	<p>
+					    	{if $entry->currentdate < $entry->enddate && $entry->currentdate > $entry->startdate }
+					    	<a href="{$entry->bieden}" class="btn btn-warning" role="button">Bieden</a><br/><br/>
+					    	{/if}
+					    	<a href="{$entry->meerinfo}" class="btn btn-warning" role="button">Meer info</a></p>
 					    </div>
 					</div>
+					<script type="text/javascript">
+						
+						start = new Date({$entry->startdate}*1000);
+						end = new Date({$entry->enddate}*1000);
+
+						{literal}
+						function checkTime(i) {
+					    	if (i<10) {i = "0" + i};  // add zero in front of numbers < 10
+					    	return i;
+						}
+
+						
+						h = checkTime(start.getHours());
+						m = checkTime(start.getMinutes());
+
+						u = checkTime(end.getHours());
+						e = checkTime(end.getMinutes());
+
+						display = 'van '+h+':'+m+' - '+start.toDateString()+' tot '+u+':'+e+' - '+end.toDateString()
+						{/literal}
+						dates = document.getElementById({$entry->id});
+						dates.innerHTML = display;
+						
+					</script>
 					<div class="col-md-2 hidden-sm hidden-xs">
 						<img src="{root_url}/uploads/images/products/small/{$entry->image}" class="img-responsive img-circle largepic" data-toggle="modal" data-target="#modalr{$entry->id}">
 						<div class="modal fade" id="modalr{$entry->id}" tabindex="-1" role="dialog" aria-labelledby="Modal{$entry->id}" aria-hidden="true">

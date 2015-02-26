@@ -18,7 +18,7 @@
                <td>{$item->id}</td>
                <td>{$item->title}</td>
                <td>{$item->desc}</td>
-               <td><img title="Set Status to 'Draft'" alt="Set Status to 'Draft'" class="systemicon" src="themes/OneEleven/images/icons/system/true.gif"></a></td>
+               <td>{$item->expire|cms_date_format}</td>
                <td>{$item->editlink}</td>
                <td>{$item->deletelink}</td>
             </tr>

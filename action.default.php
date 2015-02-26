@@ -45,11 +45,12 @@ if (isset($params['auction_id'])) {
       $onerow->name = $row['name'];
       $onerow->pname = $row['pname'];
       $onerow->image = $row['productimage'];
-      $onerow->active = $row['active'];
+	  $onerow->startdate =  $row['start_date'];
+      $onerow->enddate =  $row['end_date'];
       $onerow->pdesc = $row['pdescription'];
       $onerow->adesc = $row['description'];
       $onerow->bieden = $this->CreateLink($id, 'placebid', $returnid, strip_tags('Bied'), array('auction_id' => $row['auction_id']), '', true);
-
+	  $onerow->currentdate = time();
 
 
       $getbids = 'SELECT * from '.cms_db_prefix().'module_dev4auctions_bids where auction_id=? ORDER BY bprice ';
@@ -91,12 +92,13 @@ if (isset($params['auction_id'])) {
       $onerow->name = $row['name'];
       $onerow->pname = $row['pname'];
       $onerow->image = $row['productimage'];
-      $onerow->active = $row['active'];
+	  $onerow->startdate =  $row['start_date'];
+      $onerow->enddate =  $row['end_date'];
       $onerow->pdesc = $row['pdescription'];
       $onerow->adesc = $row['description'];
       $onerow->bieden = $this->CreateLink($id, 'placebid', $returnid, strip_tags('Bied'), array('auction_id' => $row['auction_id']), '', true);
       $onerow->meerinfo = $this->CreateLink($id, 'default', $returnid, strip_tags('meerinfo'), array('auction_id' => $row['auction_id']), '', true);
-
+	  $onerow->currentdate = time();
 
 
 
@@ -138,12 +140,14 @@ if (isset($params['auction_id'])) {
       $onerow->id = $row['auction_id'];
       $onerow->name = $row['name'];
       $onerow->pname = $row['pname'];
-      $onerow->active = $row['active'];
+	  $onerow->startdate =  $row['start_date'];
+      $onerow->enddate =  $row['end_date'];
       $onerow->pdesc = $row['pdescription'];
       $onerow->adesc = $row['description'];
       $onerow->image = $row['productimage'];
       $onerow->bieden = $this->CreateLink($id, 'placebid', $returnid, strip_tags('Bied'), array('auction_id' => $row['auction_id']), '', true);
       $onerow->meerinfo = $this->CreateLink($id, 'default', $returnid, strip_tags('meerinfo'), array('auction_id' => $row['auction_id']), '', true);
+	  $onerow->currentdate = time();
 
       $getbids = 'SELECT * from '.cms_db_prefix().'module_dev4auctions_bids where auction_id=? ORDER BY bprice ';
       $return = $db->Execute($getbids, array($row['auction_id']));
@@ -170,88 +174,5 @@ if (isset($params['auction_id'])) {
    echo $this->ProcessTemplate('listauctions.tpl');
 }
 
-/*
-
-$db = $gCms->GetDb();
-
-$query = 'SELECT * from '.cms_db_prefix().
-   'module_dev4auctions_auctions';
-
-if (isset($params['auction_id']))
-   {
-   // *ALWAYS* use parameterized queries with user-provided input
-   // to prevent SQL-Injection attacks!
-   $query .= ' where auction_id = ?';
-   $result = $db->Execute($query,array($params['auction_id']));
-   $mode = 'detail'; // we're viewing a single record
-   }
-else
-   {
-   // we're not getting a specific record, so show 'em all. Probably should paginate.
-   $result = $db->Execute($query);
-   $mode = 'summary'; // we're viewing a list of records
-   }
-   
-$records = array();
-while ($result !== false && $row=$result->FetchRow())
-   {
-   // create a new object for every record that we retrieve
-   $rec = new stdClass();
-   $rec->id = $row['auction_id'];
-   $rec->name = $row['name'];
-   $rec->description = $row['description'];
-
-   // create attributes for rendering "view" links for the object.
-   // $id and $returnid are predefined for us by the module API
-   // that last parameter is the Pretty URL link
-   $rec->view = $this->CreateFrontendLink($id, $returnid, 'default', $this->Lang('link_view'),
-      array('auction_id'=>$rec->id),'',false,true,'',false,'skeleton/view/'.$rec->id.'/'.$returnid);
-   $rec->edit = $this->CreateFrontendLink($id, $returnid, 'add_edit', $this->Lang('edit'),
-      array('auction_id'=>$rec->id),'',false,true,'',false,'skeleton/edit/'.$rec->id.'/'.$returnid);
-   array_push($records,$rec);
-   } else {
-      $rec = new stdClass();
-      $rec->id = 12;
-      $rec->name = 'something';
-      $rec->description = 'whent wrong';
-
-      // create attributes for rendering "view" links for the object.
-      // $id and $returnid are predefined for us by the module API
-      // that last parameter is the Pretty URL link
-
-      array_push($records,$rec);
-   }
-
-// Expose the list to smarty.
-$this->smarty->assign('records',$records);
-
-// Tell Smarty which mode we're in
-$this->smarty->assign('mode',$mode);
-
-// and a count of records
-$this->smarty->assign('title_num_records',$this->Lang('title_num_records',array(count($records))));
-
-if ($this->GetPreference('allow_add',1) == 1)
-   {
-   $this->smarty->assign('add', $this->CreateFrontendLink($id, $returnid, 'add_edit',
-      $this->Lang('add_record'),array(),'',false,true,'',false,'skeleton/add/'.$returnid));
-
-   }
-else
-   {
-   $this->smarty->assign('add', '');
-   }
-
-if (isset($params['module_message']))
-   {
-   $this->smarty->assign('module_message',$params['module_message']);
-   }
-else
-   {
-   $this->smarty->assign('module_message','');
-   }
-
-// Display the populated template
-*/
 
 ?>
