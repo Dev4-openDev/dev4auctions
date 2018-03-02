@@ -22,9 +22,35 @@
 			<div class="caption center-align-text">
 				<h3>{$entry->name}</h3>
 				<h4>Hoogste Bod: €{$entry->bids['bprice']},-</h4>
-				<p><a href="{$entry->bieden}" class="btn btn-warning" role="button">Bied</a>   <a href="{$entry->meerinfo}" class="btn btn-warning" role="button">Meer info</a></p>
+				<p><small id={$entry->id}></small></p>
+				<p>
+				{if $entry->currentdate < $entry->enddate && $entry->currentdate > $entry->startdate}
+				<a href="{$entry->bieden}" class="btn btn-warning" role="button">Bied</a>{/if}   <a href="{$entry->meerinfo}" class="btn btn-warning" role="button">Meer info</a></p>
 				{$entry->adesc}				
 			</div>
+					<script type="text/javascript">
+						
+						start = new Date({$entry->startdate}*1000);
+						end = new Date({$entry->enddate}*1000);
+
+						{literal}
+						function checkTime(i) {
+					    	if (i<10) {i = "0" + i};  // add zero in front of numbers < 10
+					    	return i;
+						}
+
+						
+						h = checkTime(start.getHours());
+						m = checkTime(start.getMinutes());
+
+						u = checkTime(end.getHours());
+						e = checkTime(end.getMinutes());
+
+						display = 'van '+h+':'+m+' - '+start.toDateString()+' tot '+u+':'+e+' - '+end.toDateString()
+						{/literal}
+						dates = document.getElementById({$entry->id});
+						dates.innerHTML = display;
+						
 		</div>
 	</div>
 {/foreach}

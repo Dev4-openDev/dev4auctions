@@ -25,8 +25,8 @@
 			description X,
 			active B,
 			product_id I,
-			start_date T,
-			end_date T
+			start_date N,
+			end_date N
 			";
 
 	$bids = "

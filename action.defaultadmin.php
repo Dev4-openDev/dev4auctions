@@ -54,6 +54,7 @@ while ($results && $row = $results->FetchRow()) {
   $onerow->title = $this->CreateLink($id, 'editauction', $returnid, strip_tags($row['name']), array('auction_id'=>$row['auction_id']));
   $onerow->desc = $row['description'];
   $onerow->product = $row['product_id'];
+  $onerow->expire =  $row['end_date'];
   $onerow->editlink = $this->CreateLink($id, 'editauction', $returnid, $gCms->variables['admintheme']->DisplayImage('icons/system/edit.gif', $this->Lang('edit'),'','','systemicon'), array('auction_id'=>$row['auction_id']));
   $onerow->deletelink = $this->CreateLink($id, 'deleteauction', $returnid, $gCms->variables['admintheme']->DisplayImage('icons/system/delete.gif', $this->Lang('delete'),'','','systemicon'), array('auction_id'=>$row['auction_id']), $this->Lang('areyousure'));
   $onerow->rowclass = $rowclass;

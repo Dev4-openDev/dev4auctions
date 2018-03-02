@@ -46,6 +46,8 @@ if (isset($params['auction_id']))
       $sid = $row['auction_id']; // stupid -- we're passing the param, and then using the database version.
       $name = $row['name'];
       $desc = $row['description'];
+	  $startdate = $row['start_date'];
+	  $enddate = $row['end_date'];
       $product = $row['product_id'];
 	  // we decode this next one, because it gets stored encoded, and the CreateTextArea API encodes as well, so
 	  // if we didn't decode it, we'd get double encoding.
@@ -65,7 +67,8 @@ else
    $desc = 'Some text describing this auction';
    $name = 'some name';
    $product = '???';
-  // $exp = '';
+   $startdate = time();
+   $enddate = $startdate+ (7 * 24 * 60 * 60);
    }
 
 $usedproduct = $this->GetPreference('default_product', '');
@@ -89,11 +92,19 @@ $smarty->assign('titlename',$this->Lang('title_name'));
 $smarty->assign('product',$this->Lang('title_product'));
 $smarty->assign('title_description',$this->Lang('title_description'));
 
+$smarty->assign('startdatetitle',$this->Lang('startdate_title'));
+$smarty->assign('enddatetitle',$this->Lang('enddate_title'));
+$smarty->assign_by_ref('startdate', $startdate);
+$smarty->assign('startdateprefix', $id.'startdate_');
+$smarty->assign_by_ref('enddate', $enddate);
+$smarty->assign('enddateprefix', $id.'enddate_');
+
 
 // create inputs for the Form elements, and pass them to Smarty. You'd best look up the crazy long parameter
 // lists for the Form API in lib/classes/class.module.inc.php
 $smarty->assign('input_name',$this->CreateInputText($id,'name',$name));
 $smarty->assign('input_product', $this->CreateInputDropdown($id, 'product_id', $productList, -1, $usedproduct));
+
 //$smarty->assign('input_product',$this->CreateInputText($id,'product',$product));
 $smarty->assign('input_description',$this->CreateTextArea(true, $id, $desc, 'description', '', '', '', '', 40, 5));
 // pass a hidden key value along with the submit button
